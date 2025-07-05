@@ -113,3 +113,23 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+---
+
+## VS Code Extension Storage Migration Warning
+
+When working with this project in Visual Studio Code, you may occasionally see a warning similar to:
+
+```
+[warn] File to move/copy does not exist (VS Code: 'extensionStorage/[...].json')
+```
+
+This message typically appears during extension storage migration (for example, when updating or restoring VS Code extensions, or moving the workspace between devices). Such warnings are common and harmless if the referenced state file was never created before. In other words, if you have not used features of an extension that would result in the creation of per-project state, VS Code may attempt to move a file that isn't present, resulting in this warning.
+
+**What should I do?**
+- _In almost all cases, **no action is needed** and these warnings can be safely ignored._  
+- The warning does **not** prevent the app, your code, or your session from working correctly.
+- If you use advanced VS Code extensions with workspace state, missing state files will simply be re-created as needed.
+
+These messages are informational and are not errors. Only take further action if you are experiencing actual problems with a specific VS Code extension's functionality after migration.
+
