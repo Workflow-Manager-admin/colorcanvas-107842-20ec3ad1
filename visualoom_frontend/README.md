@@ -11,7 +11,40 @@ This project provides a minimal React template with a clean, modern UI and minim
 
 ## Getting Started
 
-In the project directory, you can run:
+### Pexels API Integration (Inspiration Gallery & Moodboard)
+
+This project uses the [Pexels API](https://www.pexels.com/api/) for curated and searched image inspiration. **Your API key must be stored securely.**
+
+#### 1. Set up your API key
+
+- Add a `.env` file in `visualoom_frontend/` (see `.env.example` below).  
+- **Never** commit or expose secrets in your codebase.
+- Follow the `.gitignore` rule to keep `.env` private.
+
+Example:
+```
+REACT_APP_PEXELS_API_KEY=your-pexels-key-here
+```
+
+#### 2. Usage in code
+
+Pexels API access is provided via the `usePexels` React hook:
+```js
+import { usePexels } from "./src/usePexels";
+
+const { images, loading, error, fetchCurated } = usePexels();
+useEffect(() => { fetchCurated({ per_page: 8 }); }, []);
+```
+
+- No keys are hardcoded; the hook securely reads your .env config at build.
+- For inspiration galleries and moodboard image selection, use the hook to load curated or searched Pexels results.
+
+#### 3. Demo
+
+- To test, create `.env` and restart the dev server.
+- See [src/usePexels.js](src/usePexels.js) for all options.
+
+---
 
 ### `npm start`
 
