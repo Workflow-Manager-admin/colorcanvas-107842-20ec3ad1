@@ -11,6 +11,8 @@ import "./InspirationGallery.css";
 import { supabase } from './supabaseClient';
 import MoodboardBuilder from './MoodboardBuilder';
 import './MoodboardBuilder.css';
+import Auth from './Auth';
+
 // PUBLIC_INTERFACE
 function App() {
   const [theme, setTheme] = useState('light');
@@ -20,13 +22,53 @@ function App() {
   const [galleryActive, setGalleryActive] = useState(false);
   const [moodboardActive, setMoodboardActive] = useState(false);
 
-  // Placeholder for user object; in a real app, integrate Supabase Auth
-  const [user] = useState({ id: "demo-user" });
+  // Auth and session state
+  const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [authChecked, setAuthChecked] = useState(false);
 
   // Effect to apply theme to document element
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
+
+  // Session Listener for Supabase Auth
+  useEffect(() => {
+    // Try to restore user session (if any)
+    async function checkSession() {
+      const session = (await supabase.auth.getSession()).data.session;
+      setUser(session?.user || null);
+      setAuthChecked(true);
+    }
+    checkSession();
+    // subscribe to auth changes
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user || null);
+      setAuthChecked(true);
+    });
+    return () => {
+      listener?.subscription?.unsubscribe();
+    };
+  }, []);
+
+  // Fetch persona/onboarding data if user is logged in
+  useEffect(() => {
+    async function fetchProfile() {
+      if (!user) { setProfile(null); return; }
+      try {
+        const { data } = await supabase.from("user_profile").select("*").eq("user_id", user.id).single();
+        setProfile(data || null);
+      } catch { setProfile(null); }
+    }
+    if (user) fetchProfile();
+  }, [user]);
+
+  // Logout handler
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+    setProfile(null);
+  };
 
   // PUBLIC_INTERFACE
   const toggleTheme = () => {
@@ -107,12 +149,38 @@ function App() {
         setImageCache((imgs || []).map(im => im.image_url));
       }
     }
-    if (moodboardActive) fetchCaches();
+    if (moodboardActive && user?.id) fetchCaches();
   }, [moodboardActive, user]);
 
   // Navigation helpers
   const goToDashboard = () => setDashboardActive(true);
   const closeDashboard = () => setDashboardActive(false);
+
+  if (!authChecked) {
+    // You may want a spinner here for better UX
+    return (
+      <div className="quiz-overlay" style={{ zIndex: 1600, background: "rgba(255,250,254,0.98)" }}>
+        <div style={{
+          color: "#ff70ae",
+          fontWeight: 600,
+          fontSize: "1.19rem",
+          background: "#fff",
+          borderRadius: "32px",
+          padding: "64px 52px",
+          margin: "90px auto",
+          maxWidth: 400,
+          boxShadow: "0 2px 24px #ff70ae33"
+        }}>
+          Loading...
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    // Show login/signup onboarding modal
+    return <Auth onAuth={setUser} />;
+  }
 
   return (
     <div className="App">
@@ -128,6 +196,42 @@ function App() {
         <p>
           <strong>VisuaLoom</strong> — Playful Aesthetic Discovery
         </p>
+
+        {/* Personalized user greeting - playful! */}
+        {user && (
+          <div
+            style={{
+              color: "#790241",
+              fontWeight: 700,
+              margin: "18px auto 0",
+              background: "#fcfcfc",
+              borderRadius: "16px",
+              padding: "6px 19px 7px",
+              fontSize: "1.12rem",
+              width: "fit-content"
+            }}
+            aria-live="polite"
+          >
+            👋 Hi, {profile?.persona_name || user.email?.split("@")[0]}!
+            <button
+              className="quiz-action-btn"
+              onClick={handleLogout}
+              style={{
+                marginLeft: 18,
+                fontSize: "0.91rem",
+                borderRadius: "12px",
+                background: "#fffcee",
+                color: "#ff70ae",
+                border: "1.2px solid #ff70ae56",
+                fontWeight: 700
+              }}
+              aria-label="Logout"
+            >
+              Logout
+            </button>
+          </div>
+        )}
+
         {/* Dashboard nav cards/buttons */}
         <div style={{
           display: "flex",
