@@ -6,6 +6,8 @@ import './AestheticQuiz.css';
 import ColorPaletteExplorer from './ColorPaletteExplorer';
 import './ColorPaletteExplorer.css';
 import Dashboard from './Dashboard';
+import InspirationGallery from "./InspirationGallery";
+import "./InspirationGallery.css";
 import { supabase } from './supabaseClient';
 
 // PUBLIC_INTERFACE
@@ -14,6 +16,7 @@ function App() {
   const [quizActive, setQuizActive] = useState(false);
   const [paletteActive, setPaletteActive] = useState(false);
   const [dashboardActive, setDashboardActive] = useState(false);
+  const [galleryActive, setGalleryActive] = useState(false);
 
   // Placeholder for user object; in a real app, integrate Supabase Auth
   const [user] = useState({ id: "demo-user" });
@@ -138,6 +141,32 @@ function App() {
             🗂️ Dashboard
           </button>
         </div>
+        {/* Inspiration Gallery floating button */}
+        {!galleryActive && !quizActive && !paletteActive && !dashboardActive && (
+          <button
+            className="inspo-float-btn"
+            aria-label="Open Inspiration Gallery"
+            style={{
+              position: "fixed",
+              right: "38px",
+              bottom: "38px",
+              zIndex: 100,
+              background: "linear-gradient(84deg, #ff70ae 76%, #790241 110%)",
+              color: "#fff",
+              fontSize: "1.21rem",
+              border: "none",
+              borderRadius: "24px",
+              fontWeight: 700,
+              boxShadow: "0 6px 18px #ff70ae44, 0 1.5px 6px #4d006044",
+              padding: "13px 32px",
+              cursor: "pointer",
+              outline: "none"
+            }}
+            onClick={() => setGalleryActive(true)}
+          >
+            🌈 Inspiration Gallery
+          </button>
+        )}
         <p>
           Current theme: <strong>{theme}</strong>
         </p>
@@ -207,6 +236,10 @@ function App() {
               <Dashboard user={user} />
             </div>
           </div>
+        )}
+        {/* InspirationGallery modal */}
+        {galleryActive && (
+          <InspirationGallery asModal onClose={() => setGalleryActive(false)} />
         )}
       </header>
     </div>
