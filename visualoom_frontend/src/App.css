@@ -102,3 +102,12 @@
     font-size: 12px;
   }
 }
+/* Moodboard FAB */
+.moodboard-float-btn {
+  transition: box-shadow 0.14s, background 0.13s;
+}
+.moodboard-float-btn:hover, .moodboard-float-btn:focus {
+  background: linear-gradient(109deg,#fcfcfc 50%,#ff70ae 120%);
+  color: #790241;
+  box-shadow: 0 10px 28px #ff70ae55;
+} 

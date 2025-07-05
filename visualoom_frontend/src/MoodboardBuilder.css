@@ -1,0 +1,299 @@
+.moodboard-modal-overlay {
+  position: fixed;
+  left: 0; top: 0; right: 0; bottom: 0;
+  z-index: 2100;
+  background: rgba(44, 18, 61, 0.79);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInMoodboard 0.35s;
+}
+
+@keyframes fadeInMoodboard {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.moodboard-modal-content {
+  position: relative;
+  background: #fff;
+  border-radius: 40px;
+  padding: 31px 30px 35px 285px;
+  max-width: 1100px;
+  width: 96vw;
+  min-width: 375px;
+  box-shadow: 0 2px 44px 1px #ff70ae33, 0 1.5px 8px #79024122;
+  z-index: 2200;
+  min-height: 480px;
+  overflow: visible;
+}
+.moodboard-title {
+  text-align: left;
+  color: #ff70ae;
+  margin-bottom: 12px;
+  font-size: 2.09rem;
+  font-weight: 800;
+  letter-spacing: .019em;
+  margin-left: 9px;
+}
+.moodboard-title-input {
+  font-size: 1.1rem;
+  color: #790241;
+  font-weight: 700;
+  padding: 7px 0 7px 13px;
+  border-radius: 13px;
+  border: 2px solid #ff70ae22;
+  margin-bottom: 16px;
+  width: 266px;
+  display: block;
+  background: #fcfcfc;
+  margin-left: 9px;
+}
+.moodboard-close-btn {
+  position: absolute;
+  right: 27px; top: 18px; z-index: 9;
+  background: #ff70ae;
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  font-size: 1.33rem;
+  font-weight: bold;
+  padding: 7px 19px;
+  box-shadow: 0 1px 8px #ff70ae33;
+  cursor: pointer;
+  transition: background 0.17s;
+}
+.moodboard-close-btn:hover,
+.moodboard-close-btn:focus {
+  background: #790241;
+}
+
+.moodboard-board {
+  background: linear-gradient(125deg, #fcfcfc 70%, #ffe4fa 100%);
+  border-radius: 24px;
+  border: 2.5px dashed #ff70ae1a;
+  box-shadow: 0 6px 18px #7902410c;
+  width: 750px;
+  height: 480px;
+  margin-left: 10px;
+  overflow: hidden;
+  position: relative;
+  outline: none;
+  transition: box-shadow 0.2s;
+}
+.moodboard-board:focus {
+  box-shadow: 0 1px 22px #ff70ae3b !important;
+}
+
+.moodboard-sidebar {
+  position: absolute;
+  left: 13px;
+  top: 24px;
+  width: 225px;
+  background: #fcfcfc;
+  border-radius: 25px;
+  box-shadow: 0 0.5px 9px #ff70ae11;
+  padding: 18px 12px 18px 12px;
+  min-height: 436px;
+  z-index: 1150;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.moodboard-toolbar-row {
+  margin-bottom: 11px;
+}
+.toolbar-label {
+  font-size: 1.03rem;
+  font-weight: 700;
+  color: #790241;
+  margin-bottom: 7px;
+  display: block;
+  margin-left: 5px;
+}
+.toolbar-scroller {
+  display: flex;
+  flex-direction: row;
+  gap: 11px;
+  border-radius: 14px;
+  overflow-x: auto;
+  padding-bottom: 3px;
+  background: #fff;
+  min-height: 43px;
+  max-width: 212px;
+}
+.toolbar-img-thumb {
+  width: 58px;
+  height: 46px;
+  border-radius: 14px;
+  margin-right: 4px;
+  cursor: grab;
+  object-fit: cover;
+  border: 2px solid #ff70ae18;
+  transition: box-shadow 0.16s;
+  box-shadow: 0 1.5px 6px #79024111;
+}
+.toolbar-img-thumb:active { opacity: 0.72; }
+.toolbar-img-thumb:hover {
+  box-shadow: 0 2px 14px #ff70ae32;
+  border: 2.2px solid #ff70ae78;
+}
+.toolbar-palette-thumb {
+  min-width: 53px;
+  min-height: 32px;
+  border-radius: 13px;
+  box-shadow: 0 1px 8px #79024114;
+  border: 2px solid #79024114;
+  display: flex;
+  align-items: center;
+  margin-right: 6px;
+  cursor: grab;
+  background: #fff;
+  padding: 2px 0 2px 2.7px;
+  gap: 2px;
+  position: relative;
+}
+
+.toolbar-palette-thumb:active { opacity: 0.8; }
+.toolbar-palette-thumb:hover {
+  box-shadow: 0 2px 13px #ff70ae22;
+  border: 2.2px solid #ff70ae73;
+}
+.toolbar-palette-color {
+  display: inline-block;
+  width: 11px;
+  height: 22px;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px #79024123;
+  margin: 0 1px;
+  border: 0.5px solid #fff;
+}
+
+.moodboard-footer {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 23px;
+  margin-left: 20px;
+}
+.moodboard-save-btn {
+  font-size: 1.10rem;
+  background: linear-gradient(90deg, #ff70ae 65%, #790241 110%);
+  color: #fff;
+  border: none;
+  border-radius: 23px;
+  padding: 9px 31px;
+  font-weight: 700;
+  box-shadow: 0 2px 14px #ff70ae22;
+  transition: background 0.19s;
+  cursor: pointer;
+  margin-right: 11px;
+}
+.moodboard-save-btn:disabled {
+  background: #eeeeee !important;
+  color: #aaa !important;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+.moodboard-save-status {
+  font-size: 1.02rem;
+  color: #790241;
+  font-style: italic;
+  opacity: 0.83;
+}
+
+.moodboard-obj {
+  position: absolute;
+  box-shadow: 0 1.7px 10px #ff70ae13;
+  user-select: none;
+  outline: 2px solid transparent;
+  transition: outline 0.13s;
+}
+.moodboard-obj.selected {
+  outline: 2.5px solid #ff70ae;
+  box-shadow: 0 6px 20px #ff70ae33;
+  z-index: 10;
+}
+
+/* Image board object */
+.moodboard-img img {
+  pointer-events: none;
+}
+.obj-resize-handle {
+  position: absolute;
+  width: 17px;
+  height: 17px;
+  right: -8px;
+  bottom: -7px;
+  background: linear-gradient(120deg, #fff6fd 80%, #ff70ae 110%);
+  border: 2.4px solid #79024155;
+  border-radius: 7px;
+  cursor: nwse-resize;
+  z-index: 2;
+  box-shadow: 0 2px 7px #ff70ae13;
+  transition: background 0.15s;
+}
+.obj-resize-handle:hover,
+.obj-resize-handle:focus {
+  background: #ff70ae;
+}
+.obj-delete-btn {
+  position: absolute;
+  right: 3px;
+  top: 1px;
+  background: #ff70ae;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 23px;
+  height: 23px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 1px 7px #ff70ae16;
+  z-index: 11;
+  padding: 0;
+  outline: none;
+  opacity: 0.87;
+}
+.obj-delete-btn:focus, .obj-delete-btn:hover {
+  background: #790241;
+}
+
+/* Palette object on board */
+.moodboard-palette {
+  min-width: 80px;
+  min-height: 60px;
+  background: #fcfcfc;
+  border-radius: 17px;
+  box-shadow: 0 1px 7px #79024114;
+}
+.moodboard-palette.selected {
+  outline: 2.2px solid #790241;
+}
+
+.modal-bg-glow {
+  position: fixed;
+  left: 0; right: 0; top: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 1091;
+  background: radial-gradient(ellipse at 62% 65%, #ff70ae29 0%, #fff0 88%);
+}
+@media (max-width: 1200px) {
+  .moodboard-modal-content { max-width: 98vw; padding-right: 7vw; }
+  .moodboard-board { width: 525px; height: 320px; }
+  .moodboard-sidebar { min-height: 312px; }
+}
+@media (max-width: 900px) {
+  .moodboard-modal-content {
+    padding: 17px 10px 16px 20px;
+    max-width: 98vw;
+    min-width: 0;
+  }
+  .moodboard-board { width: 92vw; min-width: 170px; }
+  .moodboard-sidebar { display: none;}
+}
+@media (max-width: 600px) {
+  .moodboard-modal-content { min-width: 99vw; padding: 8px 1vw 6px; }
+  .moodboard-board { width: 98vw; min-width: 95vw; height: 210px; }
+}

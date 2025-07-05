@@ -9,7 +9,8 @@ import Dashboard from './Dashboard';
 import InspirationGallery from "./InspirationGallery";
 import "./InspirationGallery.css";
 import { supabase } from './supabaseClient';
-
+import MoodboardBuilder from './MoodboardBuilder';
+import './MoodboardBuilder.css';
 // PUBLIC_INTERFACE
 function App() {
   const [theme, setTheme] = useState('light');
@@ -17,6 +18,7 @@ function App() {
   const [paletteActive, setPaletteActive] = useState(false);
   const [dashboardActive, setDashboardActive] = useState(false);
   const [galleryActive, setGalleryActive] = useState(false);
+  const [moodboardActive, setMoodboardActive] = useState(false);
 
   // Placeholder for user object; in a real app, integrate Supabase Auth
   const [user] = useState({ id: "demo-user" });
@@ -70,6 +72,43 @@ function App() {
       alert("Failed to save image(s)");
     }
   };
+
+  // Moodboard palette/image drag options (dashboard preview)
+  const [paletteCache, setPaletteCache] = useState([]);
+  const [imageCache, setImageCache] = useState([]);
+
+  // Fetch for moodboard sidebar tools when modal is opened
+  useEffect(() => {
+    async function fetchCaches() {
+      if (moodboardActive && user?.id) {
+        // Get user's palettes & images for toolbar
+        let { data: pals } = await supabase
+          .from("saved_palettes")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("saved_at", { ascending: false });
+        let { data: imgs } = await supabase
+          .from("saved_images")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("saved_at", { ascending: false });
+        setPaletteCache(
+          (pals || [])
+            .map(p => {
+              try {
+                if (typeof p.palette === "string") return JSON.parse(p.palette);
+                return p.palette;
+              } catch {
+                return [];
+              }
+            })
+            .filter(x => Array.isArray(x) && x.length > 0)
+        );
+        setImageCache((imgs || []).map(im => im.image_url));
+      }
+    }
+    if (moodboardActive) fetchCaches();
+  }, [moodboardActive, user]);
 
   // Navigation helpers
   const goToDashboard = () => setDashboardActive(true);
@@ -142,7 +181,8 @@ function App() {
           </button>
         </div>
         {/* Inspiration Gallery floating button */}
-        {!galleryActive && !quizActive && !paletteActive && !dashboardActive && (
+        {!galleryActive && !quizActive && !paletteActive && !dashboardActive && !moodboardActive && (
+          <>
           <button
             className="inspo-float-btn"
             aria-label="Open Inspiration Gallery"
@@ -166,6 +206,30 @@ function App() {
           >
             🌈 Inspiration Gallery
           </button>
+          <button
+            className="moodboard-float-btn"
+            aria-label="Open Moodboard Builder"
+            style={{
+              position: "fixed",
+              right: "38px",
+              bottom: "114px",
+              zIndex: 101,
+              background: "linear-gradient(105deg,#ff70ae 68%,#fff4fc 98%)",
+              color: "#790241",
+              fontSize: "1.18rem",
+              border: "none",
+              borderRadius: "23px",
+              fontWeight: 800,
+              boxShadow: "0 7px 21px #ff70ae58, 0 1.5px 6px #79024122",
+              padding: "12px 21px",
+              cursor: "pointer",
+              outline: "none"
+            }}
+            onClick={() => setMoodboardActive(true)}
+          >
+            ✨ Build Moodboard
+          </button>
+          </>
         )}
         <p>
           Current theme: <strong>{theme}</strong>
@@ -236,6 +300,15 @@ function App() {
               <Dashboard user={user} />
             </div>
           </div>
+        )}
+        {moodboardActive && (
+          <MoodboardBuilder
+            open={moodboardActive}
+            onClose={() => setMoodboardActive(false)}
+            user={user}
+            paletteOptions={paletteCache}
+            imageOptions={imageCache.map(url => ({ src: url }))}
+          />
         )}
         {/* InspirationGallery modal */}
         {galleryActive && (
