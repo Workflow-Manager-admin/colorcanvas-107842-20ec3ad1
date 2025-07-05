@@ -2,8 +2,48 @@
   width: 100vw;
   min-height: 100vh;
   background: var(--bg-secondary, #faeefb);
-  padding: 30px 0 64px 0;
+  padding: 30px 0 90px 0;
+  position: relative;
 }
+
+/* Playful floating sidebar nav */
+.dashboard-sidebar {
+  transition: left 0.28s cubic-bezier(.7,.1,.68,1.26),width 0.19s;
+  box-shadow: 2px 4px 18px #ff70ae13;
+  will-change: left, width;
+}
+/* Section and Card Interactivity */
+.dashboard-section {
+  cursor: pointer;
+  transition: box-shadow 0.16s, transform 0.11s;
+}
+.dashboard-section:focus, .dashboard-section:hover {
+  box-shadow: 0 12px 38px #ff70ae45, 0 3px 17px #79024121;
+  outline: 3px solid #ff70ae44;
+  z-index: 10;
+  transform: scale(1.035) translateY(-5px) rotate(-1deg);
+}
+
+/* Feature Card Buttons */
+.dashboard-section .quiz-action-btn {
+  transition: background 0.19s, color 0.16s, box-shadow 0.16s;
+  margin-top: 11px;
+}
+.dashboard-section .quiz-action-btn:focus, .dashboard-section .quiz-action-btn:hover {
+  background: #e17bea;
+  color: #fffcee;
+  outline: 2px solid #ff70ae;
+}
+/* Dashboard FAB (floating save) */
+.dashboard-fab {
+  transition: box-shadow 0.17s, background 0.15s;
+}
+.dashboard-fab:hover, .dashboard-fab:focus {
+  background: linear-gradient(109deg,#fcfcfc 44%,#ff70ae 120%);
+  color: #790241;
+  box-shadow: 0 13px 37px #ff70ae73, 0 1.5px 11px #79024154;
+} 
+
 
 .dashboard-title {
   text-align: center;
